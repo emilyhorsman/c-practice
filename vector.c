@@ -57,7 +57,7 @@ void push_vector(Vector *v, int value) {
 int pop_vector(Vector *v) {
     int value = v->array[--(v->i)];
 
-    if (v->i < v->n / 2) {
+    if (v->i > 0 && v->i < v->n / 2) {
         v->n /= 2;
         _resize_vector(v);
     }
