@@ -1,35 +1,30 @@
 #include <stdio.h>
 #include <stdlib.h>
+#include "linked_list.h"
 
 
-struct Node {
-    int value;
-    struct Node *next;
-};
-
-
-struct Node * _create_node(int value, struct Node *next) {
-    struct Node *node = (struct Node *) malloc(sizeof(struct Node));
+Node * _create_node(int value, Node *next) {
+    Node *node = (Node *) malloc(sizeof(Node));
     node->value = value;
     node->next = next;
     return node;
 }
 
 
-struct Node * cons(int value, struct Node *head) {
-    struct Node *node = _create_node(value, head);
+Node * cons(int value, Node *head) {
+    Node *node = _create_node(value, head);
     return node;
 }
 
 
-struct Node * uncons(struct Node *head) {
-    struct Node *h = head->next;
+Node * uncons(Node *head) {
+    Node *h = head->next;
     free(head);
     return h;
 }
 
 
-void print_list(struct Node *head) {
+void print_list(Node *head) {
     while (head != NULL) {
         printf("%d ", head->value);
         head = head->next;
@@ -38,44 +33,15 @@ void print_list(struct Node *head) {
 }
 
 
-void free_list(struct Node *head) {
+void free_list(Node *head) {
     while (head != NULL) {
         head = uncons(head);
     }
 }
 
 
-struct Node * reverse_list(struct Node *head) {
-    if (head->next == NULL) {
-        return head;
-    }
-
-    struct Node *new = reverse_list(head->next);
-    struct Node *cur = new;
-    while (cur->next != NULL) {
-        cur = cur->next;
-    }
-    cur->next = head;
-    head->next = NULL;
-    return new;
-}
-
-
-struct Node * reverse_list2(struct Node *head) {
-    if (head->next == NULL) {
-        return head;
-    }
-
-    struct Node *new = reverse_list2(head->next);
-    head->next->next = head;
-    head->next = NULL;
-
-    return new;
-}
-
-
-struct Node * reverse_list3(struct Node *head) {
-    struct Node *temp, *prev = NULL;
+Node * reverse_list(Node *head) {
+    Node *temp, *prev = NULL;
     while (head != NULL) {
         temp = head->next;
         head->next = prev;
@@ -86,10 +52,12 @@ struct Node * reverse_list3(struct Node *head) {
 }
 
 
+#ifdef _LINKED_LIST_MAIN_
 int main() {
-    struct Node *head = cons(5, cons(4, cons(3, cons(2, cons(1, _create_node(0, NULL))))));
+    Node *head = cons(5, cons(4, cons(3, cons(2, cons(1, _create_node(0, NULL))))));
     print_list(head);
-    head = reverse_list3(head);
+    head = reverse_list(head);
     print_list(head);
     free_list(head);
 }
+#endif
