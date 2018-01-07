@@ -3,16 +3,11 @@
 #include <stdlib.h>
 #include <string.h>
 
-
-struct Vector {
-    int i;
-    int n;
-    int *array;
-};
+#include "vector.h"
 
 
-struct Vector * create_vector() {
-    struct Vector *vector = (struct Vector *) malloc(sizeof(struct Vector));
+Vector * create_vector() {
+    Vector *vector = (Vector *) malloc(sizeof(Vector));
     vector->i = 0;
     vector->n = 1;
     vector->array = (int *) malloc(sizeof(int) * vector->n);
@@ -20,18 +15,18 @@ struct Vector * create_vector() {
 }
 
 
-void free_vector(struct Vector *v) {
+void free_vector(Vector *v) {
     free(v->array);
     free(v);
 }
 
 
-void print_vector_meta(struct Vector *v) {
+void print_vector_meta(Vector *v) {
     printf("Length: %d, Capacity: %d\n", v->i, v->n);
 }
 
 
-void print_vector(struct Vector *v) {
+void print_vector(Vector *v) {
     for (int i = 0; i < v->i; i++) {
         printf("%d ", v->array[i]);
     }
@@ -39,7 +34,7 @@ void print_vector(struct Vector *v) {
 }
 
 
-void _resize_vector(struct Vector *v) {
+void _resize_vector(Vector *v) {
     assert(v->i < v->n);
 
     int *array = (int *) malloc(sizeof(int) * v->n);
@@ -49,7 +44,7 @@ void _resize_vector(struct Vector *v) {
 }
 
 
-void push_vector(struct Vector *v, int value) {
+void push_vector(Vector *v, int value) {
     v->array[v->i++] = value;
 
     if (v->i > v->n / 2) {
@@ -59,7 +54,7 @@ void push_vector(struct Vector *v, int value) {
 }
 
 
-int pop_vector(struct Vector *v) {
+int pop_vector(Vector *v) {
     int value = v->array[--(v->i)];
 
     if (v->i < v->n / 2) {
@@ -71,8 +66,9 @@ int pop_vector(struct Vector *v) {
 }
 
 
+#ifdef _VECTOR_MAIN_
 int main() {
-    struct Vector *v = create_vector();
+    Vector *v = create_vector();
     print_vector_meta(v);
     for (int i = 0; i < 64; i++) {
         push_vector(v, i * 10);
@@ -86,3 +82,4 @@ int main() {
 
     free_vector(v);
 }
+#endif
